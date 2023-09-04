@@ -30,13 +30,17 @@ class Cipherlock():
             aeskey = Fernet.generate_key()
             with open('secret.pem', 'wb') as aes:
                 encrypted_key = encrypt('secret.pem', public_key)
-                aes.write(encrypted_key)
+                hybrid_key = aes.write(encrypted_key)
                 print("Hybrid Key generated...")
+
+            return hybrid_key
         
         except Exception as e:
             print(f"Error generating keys...")
             print(str(e))
             logging.error("Error:", exc_info=True)
+
+            return None
     
     # Return hybrid key to AES key for decryption
     def decrypt_hybrid_key(hybrid_key, privKey):
@@ -50,7 +54,7 @@ class Cipherlock():
             
             key = privateKey.decrypt(hybrid_key)
 
-            return hybrid_key
+            return key
         
         except Exception as e:
             print(f"Error decrypting key...")
@@ -122,3 +126,21 @@ class Cipherlock():
             print("Error with decryption...")
             print(e)
             logging.error("Error:", exc_info=True)
+
+    # Rotate keys for security purposes
+    def rotate_keys(hybrid_key, privKey, pubKey, data):
+        try:
+            decrypted_key = Cipherlock.decrypt_hybrid_key(hybrid_key, privKey)
+            decrypted_data = Cipherlock.decrypt(data, decrypted_key)
+            os.remove(decrypted_key)
+            os.remove(privKey)
+            os.remove(pubKey)
+
+            new_key = Cipherlock.generate_key()
+            encrypted_data = Cipherlock.encrypt(data, new_key)
+        
+        except Exception as e:
+            print("Error rotating keys...")
+            print(e)
+            logging.error("Error:", exc_info=True)
+
