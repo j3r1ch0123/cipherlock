@@ -1,6 +1,6 @@
 # Cipherlock Python Cryptography Module Documentation
 
-The `Cipherlock` module is a Python cryptography library that provides various functions for encrypting and decrypting data using both RSA and AES encryption algorithms. It also includes key generation and key rotation features to enhance security. Below is the documentation for the `Cipherlock` module, explaining its functions and usage.
+The `Cipherlock` module is a Python cryptography library that provides various functions for encrypting and decrypting data using both RSA and AES encryption algorithms. It also includes key generation and key rotation features to enhance security. Below is the documentation for the `Cipherlock` module, explaining its functions and usage. 256 AES encryption is still a work in progress, but RSA should work just fine.
 
 ## Table of Contents
 1. [Installation](#installation)
